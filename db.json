@@ -1,0 +1,12 @@
+{
+  "pedidos": [
+    {
+      "nome": "Emylle",
+      "cep": "64600046",
+      "Cidade": "Picos",
+      "Bairro": "Centro",
+      "rua": "Frei ibiapina",
+      "n": "172"
+    }
+  ]
+}
