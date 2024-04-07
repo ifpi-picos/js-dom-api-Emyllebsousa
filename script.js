@@ -1,39 +1,99 @@
-const inputCep = document.querySelector('#cep');
-const inputCidade = document.querySelector('#cidade');
-const inputBairro = document.querySelector('#bairro');
-const inputRua = document.querySelector('#rua');
-const inputButao=document.querySelector('#butao')
+document.addEventListener('DOMContentLoaded', function () {
+    const inputCep = document.querySelector('#cep');
+    const inputCidade = document.querySelector('#cidade');
+    const inputBairro = document.querySelector('#bairro');
+    const inputRua = document.querySelector('#rua');
+    const inputNumero = document.querySelector('#numero');
+    const inputCliente = document.querySelector('#cliente');
+    const formTodo = document.querySelector('#todo-form');
+    const pedidosList = document.querySelector('#pedidos-list'); // Adiciona uma referência à lista de pedidos
 
+    function getPedidosFromLocalStorage() {
+        const pedidosString = localStorage.getItem('pedidos');
+        return pedidosString ? JSON.parse(pedidosString) : [];
+    }
 
-async function getData () {
-    const resposta = await fetch('http://localhost:3000/pedidos');
-    const pedidos = await resposta.json();
-    console.log(pedidos);
-}
+    function savePedidosToLocalStorage(pedidos) {
+        localStorage.setItem('pedidos', JSON.stringify(pedidos));
+    }
 
-getData();
+    async function postData(pedido) {
+        try {
+            const resposta = await fetch('http://localhost:3000/pedidos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(pedido)
+            });
+            const dados = await resposta.json();
+            console.log(dados);
+            const pedidos = getPedidosFromLocalStorage();
+            pedidos.push(pedido);
+            savePedidosToLocalStorage(pedidos);
+            exibirPedidoNaLista(pedido); // Adiciona o pedido à lista
+        } catch (erro) {
+            console.error('Erro ao enviar dados:', erro);
+        }
+    }
 
-async function postData(pedidos){
-    const resposta = await fetch('http://localhost:3000/pedidos');
-    const pedidos = await resposta.json();
-}
-inputButao.addEventListener('blur', async()=>{
-    const ped= inputButao.value;
-})
-inputCep.addEventListener('blur', async () => {
-    const cep = inputCep.value;
-    buscarEnderecoPorCep(cep);
+    function exibirPedidoNaLista(pedido) {
+        const item = document.createElement('li');
+        item.innerHTML = `
+            <strong>Cliente: </strong>${pedido.cliente} - 
+            <strong>CEP: </strong>${pedido.cep} - 
+            <strong>Cidade: </strong>${pedido.cidade} - 
+            <strong>Bairro: </strong>${pedido.bairro} - 
+            <strong>Rua: </strong>${pedido.rua} - 
+            <strong>Número: </strong>${pedido.numero}
+        `;
+        pedidosList.appendChild(item); // Adiciona o item à lista de pedidos
+    }
+
+    formTodo.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const pedido = {
+            cliente: inputCliente.value,
+            cep: inputCep.value,
+            cidade: inputCidade.value,
+            bairro: inputBairro.value,
+            rua: inputRua.value,
+            numero: inputNumero.value
+        };
+        if (validarCampos(pedido)) {
+            await postData(pedido);
+            // Não é necessário mais exibir as informações individualmente
+        } else {
+            console.error('Todos os campos devem ser preenchidos!');
+        }
+    });
+
+    function validarCampos(pedido) {
+        return Object.values(pedido).every(value => value.trim() !== '');
+    }
+
+    inputCep.addEventListener('blur', async () => {
+        const cep = inputCep.value;
+        if (cep.length === 8 && /^[0-9]+$/.test(cep)) {
+            buscarEnderecoPorCep(cep);
+        } else {
+            console.error('Formato de CEP inválido');
+        }
+    });
+
+    async function buscarEnderecoPorCep(cep) {
+        try {
+            const resposta = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+            const endereco = await resposta.json();
+            preencherCampos(endereco);
+        } catch (erro) {
+            console.error('Erro ao buscar endereço:', erro);
+        }
+    }
+
+    function preencherCampos(endereco) {
+        inputCidade.value = endereco.localidade;
+        inputBairro.value = endereco.bairro;
+        inputRua.value = endereco.logradouro;
+    }
 });
-
-async function buscarEnderecoPorCep(cep) {
-    const resposta = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-    const endereco = await resposta.json();
-    console.log(endereco);
-    preencherCampos(endereco);
-}
-
-function preencherCampos(endereco) {
-    inputCidade.value = endereco.localidade;
-    inputBairro.value = endereco.bairro;
-    inputRua.value = endereco.logradouro;
-}
