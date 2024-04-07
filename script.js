@@ -28,15 +28,30 @@ document.addEventListener('DOMContentLoaded', function () {
             const pedidos = getPedidosFromLocalStorage();
             pedidos.push(pedido);
             savePedidosToLocalStorage(pedidos);
-            exibirPedidoNaLista(pedido); // Adiciona o pedido à lista
+            exibirPedidoNaLista(pedido); 
         } catch (erro) {
             console.error('Erro ao salvar dados:', erro);
         }
     }
     
-
     function exibirPedidoNaLista(pedido) {
         const item = document.createElement('li');
+        const deleteButton = document.createElement('button');
+        const completeButton = document.createElement('button'); 
+        deleteButton.textContent = 'Apagar';
+        completeButton.textContent = 'Concluir'; 
+        deleteButton.addEventListener('click', function() {
+            // Remover o item da lista
+            item.remove();
+            const index = pedidos.indexOf(pedido);
+            if (index !== -1) {
+                pedidos.splice(index, 1);
+                savePedidosToLocalStorage(pedidos);
+            }
+        });
+        completeButton.addEventListener('click', function() {
+            item.classList.add('completed');
+        });
         item.innerHTML = `
             <strong>Cliente: </strong>${pedido.cliente} - 
             <strong>CEP: </strong>${pedido.cep} - 
@@ -45,9 +60,11 @@ document.addEventListener('DOMContentLoaded', function () {
             <strong>Rua: </strong>${pedido.rua} - 
             <strong>Número: </strong>${pedido.numero}
         `;
-        pedidosList.appendChild(item); // Adiciona o item à lista de pedidos
+        item.appendChild(deleteButton);
+        item.appendChild(completeButton); 
+        pedidosList.appendChild(item);
     }
-
+    
     formTodo.addEventListener('submit', async (e) => {
         e.preventDefault();
         const pedido = {
@@ -60,7 +77,6 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         if (validarCampos(pedido)) {
             await postData(pedido);
-            // Não é necessário mais exibir as informações individualmente
         } else {
             console.error('Todos os campos devem ser preenchidos!');
         }

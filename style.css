@@ -13,8 +13,12 @@ body{
     font-family: "Exo 2", sans-serif;
     font-weight: 400;
     font-style: normal;
-  }
-  
+}
+
+.conteiner{
+    max-width: 768px;
+    margin:0 auto;
+}
 
 #form-add {
     display: grid;
@@ -28,8 +32,9 @@ body{
     margin-bottom: 10px;
     
 }
-.conteiner{
-    max-width: 768px;
-    margin:0 auto;
+.completed {
+    text-decoration: line-through; 
 }
-
+ul li{
+    list-style: none;
+}
