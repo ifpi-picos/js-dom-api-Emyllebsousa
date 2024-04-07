@@ -60,7 +60,7 @@ button{
     text-decoration: line-through; 
 }
 ul li{
-    
+   margin-right: 20px;
     list-style: none;
     
 }
