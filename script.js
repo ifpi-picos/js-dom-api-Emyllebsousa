@@ -7,8 +7,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const inputNumero = document.querySelector('#numero');
     const inputCliente = document.querySelector('#cliente');
     const formTodo = document.querySelector('#todo-form');
-    const pedidosList = document.querySelector('#pedidos-list'); // Adiciona uma referência à lista de pedidos
-
+    const pedidosList = document.querySelector('#pedidos-list'); 
+const inputData= document.querySelector('#data')
+const inputValor=document.querySelector('#valor')
     function getPedidosFromLocalStorage() {
         const pedidosString = localStorage.getItem('pedidos');
         return pedidosString ? JSON.parse(pedidosString) : [];
@@ -41,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function () {
         deleteButton.textContent = 'Apagar';
         completeButton.textContent = 'Concluir'; 
         deleteButton.addEventListener('click', function() {
-            // Remover o item da lista
             item.remove();
             const index = pedidos.indexOf(pedido);
             if (index !== -1) {
@@ -53,12 +53,13 @@ document.addEventListener('DOMContentLoaded', function () {
             item.classList.add('completed');
         });
         item.innerHTML = `
-            <strong>Cliente: </strong>${pedido.cliente} - 
-            <strong>CEP: </strong>${pedido.cep} - 
-            <strong>Cidade: </strong>${pedido.cidade} - 
-            <strong>Bairro: </strong>${pedido.bairro} - 
-            <strong>Rua: </strong>${pedido.rua} - 
-            <strong>Número: </strong>${pedido.numero}
+        <strong>Cliente: </strong>${pedido.cliente} - 
+        <strong>Data: </strong>${pedido.data} - 
+        <strong>Valor: </strong>${pedido.valor} - 
+        <strong>Cidade: </strong>${pedido.cidade} - 
+        <strong>Bairro: </strong>${pedido.bairro} - 
+        <strong>Rua: </strong>${pedido.rua} - 
+        <strong>Número: </strong>${pedido.numero}
         `;
         item.appendChild(deleteButton);
         item.appendChild(completeButton); 
@@ -69,7 +70,8 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         const pedido = {
             cliente: inputCliente.value,
-            cep: inputCep.value,
+            data: inputData.value,
+            valor: inputValor.value,
             cidade: inputCidade.value,
             bairro: inputBairro.value,
             rua: inputRua.value,

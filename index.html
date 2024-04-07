@@ -15,8 +15,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
         integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <script src="script.js" defer></script>
- <!-- $ npx json-server db.json -->
+    <script src="script.js" defer></script>
+    <!-- $ npx json-server db.json -->
 
 </head>
 
@@ -25,13 +25,14 @@
         <div class="todo-container">
 
             <header>
-                <h1>ENTREGAS.COM</h1>
+                <h1><i class="fa fa-car" aria-hidden="true"></i> - MOVIMENTAÇÃO DE VIAGENS </h1>
             </header>
             <!-- ---------------------------------------------------------------------------- -->
+            <h3>Adicione seus destinos:</h3>
             <form id="todo-form">
 
-                <h4>Adicione sua seu destino</h4>
                 <div id="form-add">
+
                     <div>
 
                         <label for="nome-cliente">Cliente</label>
@@ -59,23 +60,22 @@
                         <label for="n-cliente">Nª</label>
                         <input id="numero" type="text" placeholder="Digite o numero da casa" />
                         <div id="butao">
-    
-                            <button type="submit">
-                                <i class="fa-thin fa-plus"></i>
-                            </button>
-    
+
+                            <button id="add" type="submit"> adicionar</button>
+
                         </div>
                     </div>
-                    
+
 
 
                 </div>
             </form>
-            
-            <ul id="pedidos-list"></ul>
+            <h3>Viagens:</h3>
+            <div class="exibir">
+                <ul id="pedidos-list"></ul>
+            </div>
         </div>
-        
+    </div>
 </body>
 
 </html>
-
