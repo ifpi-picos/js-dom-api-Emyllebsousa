@@ -48,10 +48,22 @@ background-color:#8070c6;
 button{
     width: 70PX;
     border-radius: 3em;
+    border:solid 1px #4e4187;
     color:#4e4187;
     background-color:white;
-
+    cursor: pointer;
+  transition: all 0.25s ease;
 }
+  button:hover {
+    border:solid 1px #fff;
+    color:white;
+    background: #4e4187;
+
+  }
+  button:active {
+    letter-spacing: 2px ;
+  }
+
 #add{
     width: 170px;
     margin-top: 18px;

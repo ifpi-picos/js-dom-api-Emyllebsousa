@@ -39,8 +39,8 @@ const inputValor=document.querySelector('#valor')
         const item = document.createElement('li');
         const deleteButton = document.createElement('button');
         const completeButton = document.createElement('button'); 
-        deleteButton.textContent = 'Apagar';
-        completeButton.textContent = 'Concluir'; 
+        deleteButton.textContent = ' Apagar';
+        completeButton.textContent = ' Concluir'; 
         deleteButton.addEventListener('click', function() {
             item.remove();
             const index = pedidos.indexOf(pedido);
