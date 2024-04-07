@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function () {
     const inputCep = document.querySelector('#cep');
     const inputCidade = document.querySelector('#cidade');
@@ -13,29 +14,26 @@ document.addEventListener('DOMContentLoaded', function () {
         return pedidosString ? JSON.parse(pedidosString) : [];
     }
 
+    const pedidos = getPedidosFromLocalStorage();
+    pedidos.forEach(pedido => {
+        exibirPedidoNaLista(pedido);
+    });
+
     function savePedidosToLocalStorage(pedidos) {
         localStorage.setItem('pedidos', JSON.stringify(pedidos));
     }
 
     async function postData(pedido) {
         try {
-            const resposta = await fetch('http://localhost:3000/pedidos', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(pedido)
-            });
-            const dados = await resposta.json();
-            console.log(dados);
             const pedidos = getPedidosFromLocalStorage();
             pedidos.push(pedido);
             savePedidosToLocalStorage(pedidos);
             exibirPedidoNaLista(pedido); // Adiciona o pedido à lista
         } catch (erro) {
-            console.error('Erro ao enviar dados:', erro);
+            console.error('Erro ao salvar dados:', erro);
         }
     }
+    
 
     function exibirPedidoNaLista(pedido) {
         const item = document.createElement('li');
